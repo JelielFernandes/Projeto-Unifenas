@@ -6,7 +6,7 @@
 #define MAX_CARROS 100
 #define MAX_VENDAS 100
 
-// Estruturas para representar carros, clientes e vendas
+
 typedef struct
 {
     int id;
@@ -31,7 +31,7 @@ typedef struct
     struct tm dataHora;
 } Venda;
 
-// Funções para manipular os dados
+
 struct tm obterDataHoraAtual()
 {
     time_t t;
@@ -93,7 +93,7 @@ void adicionarCarro(Carro carros[], int *numCarros, const char *nomeArquivo)
 {
     Carro novoCarro;
 
-    // Ler valores do usuário
+    
     printf("Informe o modelo do carro: ");
     scanf("%49s", novoCarro.modelo);
     printf("Informe o preco do carro: ");
@@ -101,14 +101,14 @@ void adicionarCarro(Carro carros[], int *numCarros, const char *nomeArquivo)
     printf("Informe a quantidade em estoque do carro: ");
     scanf("%d", &novoCarro.quantidade_estoque);
 
-    // Atribuir um ID único
+    
     novoCarro.id = *numCarros + 1;
 
-    // Adicionar carro na lista em memória
+    
     carros[*numCarros] = novoCarro;
     (*numCarros)++;
 
-    // Abrir arquivo para adicionar o novo carro
+    
     FILE *arquivo = fopen(nomeArquivo, "a");
     if (arquivo == NULL)
     {
@@ -116,7 +116,7 @@ void adicionarCarro(Carro carros[], int *numCarros, const char *nomeArquivo)
         return;
     }
 
-    // Escrever novo carro no arquivo
+    
     fprintf(arquivo, "%d,%s,%.2f,%d\n", novoCarro.id, novoCarro.modelo, novoCarro.preco, novoCarro.quantidade_estoque);
 
     fclose(arquivo);
@@ -126,29 +126,28 @@ void adicionarCarro(Carro carros[], int *numCarros, const char *nomeArquivo)
 
 void atualizarCarro(Carro carros[], int numCarros)
 {
-    // Implemente a lógica para atualizar um carro
-    // Pode incluir a leitura de dados do usuário
+    
 }
 
 void cadastrarCliente(Cliente clientes[], int *numClientes, const char *nomeArquivo)
 {
     Cliente novoCliente;
 
-    // Ler valores do usuário
+   
     printf("Informe o nome do cliente: ");
     scanf("%49s", novoCliente.nome);
     printf("Informe o telefone do cliente: ");
     scanf("%19s", novoCliente.telefone);
     novoCliente.valor_gasto = 0.00;
 
-    // Atribuir um ID único
+   
     novoCliente.id = *numClientes + 1;
 
-    // Adicionar cliente na lista em memória
+    
     clientes[*numClientes] = novoCliente;
     (*numClientes)++;
 
-    // Abrir arquivo para adicionar o novo cliente
+    
     FILE *arquivo = fopen(nomeArquivo, "a");
     if (arquivo == NULL)
     {
@@ -156,18 +155,15 @@ void cadastrarCliente(Cliente clientes[], int *numClientes, const char *nomeArqu
         return;
     }
 
-    // Escrever novo cliente no arquivo
+   
     fprintf(arquivo, "%d,%s,%s,%.2f\n", novoCliente.id, novoCliente.nome, novoCliente.telefone, novoCliente.valor_gasto);
 
     fclose(arquivo);
 
     printf("Cliente cadastrado com sucesso!\n");
 }
-void atualizarCliente(Cliente clientes[], int numClientes)
-{
-    // Implemente a lógica para atualizar um cliente
-    // Pode incluir a leitura de dados do usuário
-}
+
+
 
 void listarClientes(Cliente clientes[], int numClientes)
 {
@@ -194,34 +190,33 @@ void realizarVenda(Venda vendas[], int *numVendas, Cliente clientes[], int numCl
 {
     Venda novaVenda;
 
-    // Ler valores do usuário
+    
     printf("Informe o ID do cliente: ");
     scanf("%d", &novaVenda.idCliente);
 
     printf("Informe o ID do carro: ");
     scanf("%d", &novaVenda.idCarro);
 
-    // Obter data e hora atual
+   
     novaVenda.dataHora = obterDataHoraAtual();
 
-    // Verificar se o cliente e o carro existem
+   
     if (novaVenda.idCliente >= 1 && novaVenda.idCliente <= numClientes &&
         novaVenda.idCarro >= 1 && novaVenda.idCarro <= numCarros)
     {
-        // Atualizar o valor gasto do cliente
         clientes[novaVenda.idCliente - 1].valor_gasto += carros[novaVenda.idCarro - 1].preco;
 
-        // Atualizar a quantidade em estoque do carro
+       
         carros[novaVenda.idCarro - 1].quantidade_estoque--;
 
-        // Atribuir um ID único
+        
         novaVenda.id = *numVendas + 1;
 
-        // Adicionar venda na lista em memória
+      
         vendas[*numVendas] = novaVenda;
         (*numVendas)++;
 
-        // Abrir arquivo para adicionar a nova venda
+        
         FILE *arquivoVendas = fopen(nomeArquivoVendas, "a");
         if (arquivoVendas == NULL)
         {
@@ -229,14 +224,14 @@ void realizarVenda(Venda vendas[], int *numVendas, Cliente clientes[], int numCl
             return;
         }
 
-        // Escrever nova venda no arquivo
+       
         fprintf(arquivoVendas, "%d,%d,%d,%d-%d-%d %d:%d:%d\n", novaVenda.id, novaVenda.idCliente, novaVenda.idCarro,
                 novaVenda.dataHora.tm_year, novaVenda.dataHora.tm_mon, novaVenda.dataHora.tm_mday,
                 novaVenda.dataHora.tm_hour, novaVenda.dataHora.tm_min, novaVenda.dataHora.tm_sec);
 
         fclose(arquivoVendas);
 
-        // Atualizar arquivo de clientes
+        
         FILE *arquivoClientes = fopen(nomeArquivoClientes, "w");
         if (arquivoClientes == NULL)
         {
@@ -244,7 +239,7 @@ void realizarVenda(Venda vendas[], int *numVendas, Cliente clientes[], int numCl
             return;
         }
 
-        // Escrever clientes atualizados no arquivo
+        
         for (int i = 0; i < numClientes; i++)
         {
             fprintf(arquivoClientes, "%d,%s,%s,%.2f\n", clientes[i].id, clientes[i].nome,
@@ -253,7 +248,7 @@ void realizarVenda(Venda vendas[], int *numVendas, Cliente clientes[], int numCl
 
         fclose(arquivoClientes);
 
-        // Atualizar arquivo de carros
+        
         FILE *arquivoCarros = fopen(nomeArquivoCarros, "w");
         if (arquivoCarros == NULL)
         {
@@ -261,7 +256,7 @@ void realizarVenda(Venda vendas[], int *numVendas, Cliente clientes[], int numCl
             return;
         }
 
-        // Escrever carros atualizados no arquivo
+        
         for (int i = 0; i < numCarros; i++)
         {
             fprintf(arquivoCarros, "%d,%s,%.2f,%d\n", carros[i].id, carros[i].modelo,
@@ -278,7 +273,7 @@ void realizarVenda(Venda vendas[], int *numVendas, Cliente clientes[], int numCl
     }
 }
 
-//----------------------------------------------
+
 int lerClientes(Cliente clientes[], const char *nomeArquivo)
 {
     FILE *arquivo = fopen(nomeArquivo, "r");
@@ -380,7 +375,7 @@ int main()
 
     do
     {
-        // Exibir menu
+        
         printf("\nMenu:\n");
         printf("1. Adicionar Carro\n");
         printf("2. Cadastrar Cliente\n");
@@ -392,7 +387,7 @@ int main()
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
 
-        // Executar a opção escolhida
+       
         switch (opcao)
         {
         case 1:
